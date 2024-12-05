@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import math
 
+
 class Rocket:
     _total_mass = 50436
     _mass_1_stage = 6686
@@ -18,6 +19,7 @@ class Rocket:
 
     _theta_0 = 90
     _tau = 900
+    _mediane_diff = []
 
     _Vex = 2570
     _Pex = 10**5
@@ -45,6 +47,7 @@ class Rocket:
     _mass_2_stage_arr = [0] * _total_time
     _mass_3_stage_arr = [0] * _total_time
     _velocity_arr = [0] * _total_time
+    _diff_arr = [0] * _total_time
     _height_arr = list(range(0, 150000, 100))
     _impulse_3_stage_arr = [0] * 1500
     _impulse_2_stage_arr = [0] * 1500
@@ -126,56 +129,58 @@ class Rocket:
         # plt.grid()
         # plt.show()
 
-    def angle(self, time, h=-1):
+    def angle(self, time):
         return math.radians(Rocket._theta_0 * math.exp(-time / Rocket._tau))
 
-    def Ft(self, time, h):
+    def f_t(self, time, h):
         # Параметры сопротивления
-        C_d = 0.47  # Коэффициент сопротивления (для цилиндрической формы ракеты)
-        A = 0.5  # Площадь поперечного сечения ракеты в м²
+        c_d = 0.47  # Коэффициент сопротивления (для цилиндрической формы ракеты)
+        s_p = 0.5  # Площадь поперечного сечения ракеты в м²
         rho_0 = 1.225  # Плотность воздуха на уровне моря (кг/м³)
-        H = 8500  # Масштаб высоты для плотности воздуха (м)
+        _h = 8500  # Масштаб высоты для плотности воздуха (м)
         if isinstance(h, complex):
             h = h.real
         h = max(0, h)
         # Плотность воздуха на высоте h
-        rho = rho_0 * math.exp(-h / H)
+        rho = rho_0 * math.exp(-h / _h)
 
         # Работа 3-й ступени
         if time < 46:
-            Vex = Rocket._isp3 * Rocket._g0  # Исходная скорость выброса для 3-й ступени
-            Pd = Rocket._Pex * pow((1 - (Rocket._g0 * h) / (Rocket._C * Rocket._T0)),
-                                   (Rocket._C * Rocket._M_earth / Rocket._R0))
-            Ft = Vex * Rocket._fuel_consumption_3_stage + 0.042 * (Rocket._Pex - Pd)
+            v_ex = Rocket._isp3 * Rocket._g0  # Исходная скорость выброса для 3-й ступени
+            p_d = Rocket._Pex * pow((1 - (Rocket._g0 * h) / (Rocket._C * Rocket._T0)),
+                                    (Rocket._C * Rocket._M_earth / Rocket._R0))
+            f_t = v_ex * Rocket._fuel_consumption_3_stage + 0.042 * (Rocket._Pex - p_d)
 
             # Сила лобового сопротивления
-            F_d = 0.5 * C_d * rho * A * (Rocket._velocity_arr[int(time)] ** 2)  # Скорость уже зависит от времени
-            Ft -= F_d  # Уменьшаем тягу на силу сопротивления
-            return Ft
+            f_d = 0.5 * c_d * rho * s_p * (Rocket._velocity_arr[int(time)] ** 2)  # Скорость уже зависит от времени
+            f_t -= f_d  # Уменьшаем тягу на силу сопротивления
+            return f_t
 
         # Работа 2-й ступени
         elif 46 <= time < 153:
-            Vex = Rocket._isp2 * Rocket._g0  # Исходная скорость выброса для 2-й ступени
-            Pd = Rocket._Pex * pow((1 - (Rocket._g0 * h) / (Rocket._C * Rocket._T0)),
-                                   (Rocket._C * Rocket._M_earth / Rocket._R0))
-            Ft = Vex * Rocket._fuel_consumption_2_stage + 0.042 * (Rocket._Pex - Pd)
+            v_ex = Rocket._isp2 * Rocket._g0  # Исходная скорость выброса для 2-й ступени
+            p_d = Rocket._Pex * pow((1 - (Rocket._g0 * h) / (Rocket._C * Rocket._T0)),
+                                    (Rocket._C * Rocket._M_earth / Rocket._R0)
+                                    )
+            f_t = v_ex * Rocket._fuel_consumption_2_stage + 0.042 * (Rocket._Pex - p_d)
 
             # Сила лобового сопротивления
-            F_d = 0.5 * C_d * rho * A * (Rocket._velocity_arr[int(time)] ** 2)  # Скорость зависит от времени
-            Ft -= F_d  # Уменьшаем тягу на силу сопротивления
-            return Ft
+            f_d = 0.5 * c_d * rho * s_p * (Rocket._velocity_arr[int(time)] ** 2)  # Скорость зависит от времени
+            f_t -= f_d  # Уменьшаем тягу на силу сопротивления
+            return f_t
 
         # Работа 1-й ступени
         elif 153 <= time < 175:
-            Vex = Rocket._isp1 * Rocket._g0  # Исходная скорость выброса для 1-й ступени
-            Pd = Rocket._Pex * pow((1 - (Rocket._g0 * h) / (Rocket._C * Rocket._T0)),
-                                   (Rocket._C * Rocket._M_earth / Rocket._R0))
-            Ft = Vex * Rocket._fuel_consumption_1_stage + 0.042 * (Rocket._Pex - Pd)
+            v_ex = Rocket._isp1 * Rocket._g0  # Исходная скорость выброса для 1-й ступени
+            p_d = Rocket._Pex * pow((1 - (Rocket._g0 * h) / (Rocket._C * Rocket._T0)),
+                                    (Rocket._C * Rocket._M_earth / Rocket._R0)
+                                    )
+            f_t = v_ex * Rocket._fuel_consumption_1_stage + 0.042 * (Rocket._Pex - p_d)
 
             # Сила лобового сопротивления
-            F_d = 0.5 * C_d * rho * A * (Rocket._velocity_arr[int(time)] ** 2)
-            Ft -= F_d  # Уменьшаем тягу на силу сопротивления
-            return Ft
+            f_d = 0.5 * c_d * rho * s_p * (Rocket._velocity_arr[int(time)] ** 2)
+            f_t -= f_d  # Уменьшаем тягу на силу сопротивления
+            return f_t
 
         # После работы двигателей, когда силы тяги исчезают
         else:
@@ -188,17 +193,17 @@ class Rocket:
         dt = 1  # Шаг по времени в секундах
         list_h = [h]  # Список для хранения высоты
         list_v_y = [v_y]  # Список для хранения скорости
-        list_prev_Ft = []  # Список для хранения тяги на предыдущем шаге
+        list_prev_f_t = []  # Список для хранения тяги на предыдущем шаге
 
         for t in range(0, 291, dt):
             if t < 175:  # Работа двигателя
                 mass = Rocket._mass_total_arr[t]  # Масса ракеты
-                phi = self.angle(t, h)  # Угол наклона
-                Ft = self.Ft(t, h)  # Тяга на текущем шаге
-                list_prev_Ft.append(Ft)  # Добавляем тягу в список
+                phi = self.angle(t)  # Угол наклона
+                f_t = self.f_t(t, h)  # Тяга на текущем шаге
+                list_prev_f_t.append(f_t)  # Добавляем тягу в список
 
                 # Расчет ускорения с учетом тяги и силы тяжести
-                a_y = (Ft * math.sin(phi) - mass * Rocket._g0) / mass
+                a_y = (f_t * math.sin(phi) - mass * Rocket._g0) / mass
 
                 # Применяем метод Эйлера для численного интегрирования
                 v_y += a_y * dt  # Обновляем скорость
@@ -215,25 +220,42 @@ class Rocket:
             # Добавляем текущие значения в списки
             list_h.append(h)
             list_v_y.append(v_y)
+            if 3 < t < 290:
+                if isinstance(list_v_y[t], complex):
+                    list_v_y[t] = list_v_y[t].real
+                Rocket._diff_arr[t] = abs(1 - list_v_y[t] / Rocket._new_data[t]) * 100
+                Rocket._mediane_diff.append(Rocket._diff_arr[t])
 
+        # Выводим среднее отклонение во время полета
+        print(f'{sum(Rocket._mediane_diff) / len(Rocket._mediane_diff):.3f}%')
         # Построение графика
         plt.title('Изменение скорости ракеты от времени (Метод Эйлера)')
         plt.xlabel('Время, секунды')
         plt.ylabel('Скорость, метры в секунду')
         plt.plot(Rocket._time_arr[:len(Rocket._new_data)], Rocket._new_data, label='Скорость ракеты (КСП)')
         plt.plot(list_v_y, label='Скорость ракеты (Метод Эйлера)')
-        # plt.plot(list_h, label='Скорость ракеты (Метод Эйлера)')
         plt.legend()
         plt.grid()
         plt.show()
 
+        #  Выводим график разницы между данными скорости
+        plt.title('Разница между скоростями в модели и в симуляции')
+        plt.xlabel('Время, секунды')
+        plt.ylabel('Разница в данных, проценты')
+        plt.plot(Rocket._diff_arr, label='Разница в процентах')
+        plt.plot()
+        plt.legend()
+        plt.grid()
+        plt.show()
 
     def imp3_change(self):
         for i in range(len(Rocket._height_arr)):
             now_h = Rocket._height_arr[i]
-            Pa = Rocket._Pex * pow(1 - (Rocket._g0 * now_h) / (Rocket._C * Rocket._T0), (Rocket._C * Rocket._M_earth / Rocket._R0))
-            Ft = Rocket._fuel_consumption_3_stage * Rocket._Vex + (Rocket._Pex - Pa) * 4.9807
-            imp3 = Ft / (Rocket._fuel_consumption_3_stage * Rocket._g0)
+            p_a = Rocket._Pex * pow(1 - (Rocket._g0 * now_h) / (Rocket._C * Rocket._T0),
+                                    (Rocket._C * Rocket._M_earth / Rocket._R0)
+                                    )
+            f_t = Rocket._fuel_consumption_3_stage * Rocket._Vex + (Rocket._Pex - p_a) * 4.9807
+            imp3 = f_t / (Rocket._fuel_consumption_3_stage * Rocket._g0)
             Rocket._impulse_3_stage_arr[i] = imp3
 
         fig, specific_impulse = plt.subplots()
@@ -248,5 +270,3 @@ class Rocket:
 rocket = Rocket()
 rocket.velocity_change()
 rocket.imp3_change()
-
-
