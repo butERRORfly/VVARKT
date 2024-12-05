@@ -1,7 +1,6 @@
-___
 # "Коммивояжеры"
 Данный репозиторий посвящен разработке проекта по курсу ВвАРКТ
-___
+
 # “Вывод ракеты на околоземную орбиту”
 ### Ссылка на документацию: 
 https://docs.google.com/document/d/1Yxf4MphG1J7vSqTSSunlhlz9D2yZ4jGtnWU15GiNd0Q/edit?usp=sharing
