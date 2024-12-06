@@ -5,8 +5,9 @@
 ### Ссылка на документацию: 
 https://docs.google.com/document/d/1Yxf4MphG1J7vSqTSSunlhlz9D2yZ4jGtnWU15GiNd0Q/edit?usp=sharing
 ___
-### Ссылка на google-диск со всеми материалами отчета: 
-https://drive.google.com/drive/folders/1axjObQoteN_TTab87oewaObyvTLzFWT
+### Ссылка на google-диск со всеми материалами отчета:
+Презентация:
+https://docs.google.com/presentation/d/1Vo4HFJmoWDqHIEEiwkgIKLBPMMPwqaVV/edit?usp=drive_link&ouid=106584303702435877656&rtpof=true&sd=true
 ___
 ### План работы: 
 
