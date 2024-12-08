@@ -8,6 +8,9 @@ ___
 ### Ссылка на google-диск со всеми материалами отчета:
 Презентация:
 https://docs.google.com/presentation/d/1Vo4HFJmoWDqHIEEiwkgIKLBPMMPwqaVV/edit?usp=drive_link&ouid=106584303702435877656&rtpof=true&sd=true
+
+Видео запуска в KSP:
+https://drive.google.com/file/d/1OZqWtaYlMb39mIXHlri_8z0PaB9Glf3N/view?usp=drive_link
 ___
 ### План работы: 
 
