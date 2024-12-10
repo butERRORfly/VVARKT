@@ -11,6 +11,9 @@ https://docs.google.com/presentation/d/1Vo4HFJmoWDqHIEEiwkgIKLBPMMPwqaVV/edit?us
 
 Видео запуска в KSP:
 https://drive.google.com/file/d/1OZqWtaYlMb39mIXHlri_8z0PaB9Glf3N/view?usp=drive_link
+
+Видео-отчет:
+https://drive.google.com/drive/folders/1axjObQoteN_TTab87oewaObyvTLzFWT_?ths=true
 ___
 ### План работы: 
 
